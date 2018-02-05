@@ -9,5 +9,5 @@
 
 ```
   % npm i -g electron-packager
-  % electron-packager . electron-study --platform=darwin --arch=x64 --overwrite
+  % npm run package
 ```

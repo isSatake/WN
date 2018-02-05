@@ -11,7 +11,7 @@
     "launch": "electron .",
     "main-process": "npm run build:main ; npm run launch",
     "start:dev": "npm run main-process & npm run watch",
-    "package": "electron-packager . WN --platform=darwin --arch=x64"
+    "package": "electron-packager . WN --platform=darwin --arch=x64 --overwrite"
   },
   "author": "",
   "license": "ISC",
