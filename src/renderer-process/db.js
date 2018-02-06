@@ -69,11 +69,19 @@ exports.getImage = async function(title) {
     const res = await Request.get(`${BING_URL}${encodeURIComponent(title)}`).set("Ocp-Apim-Subscription-Key", "3ebf24197a5a4366b937f25e14869320")
     if(res.body.value[0]){
       const url = res.body.value[0].thumbnailUrl
-      db.execute(`insert into image values(${db.escape(title)}, '${url}')`)
+      db.execute(`insert into image values(${db.escape(title)}, '${url}')`).catch((e) => {})
       return url
     }
     return ""
   } else {
     return res[0][0].url
   }
+}
+
+exports.getRandomPage = async function() {
+  let res = await db.execute(`select page_title from page where page_random >= ${Math.random(1)} and page_namespace = 0 and page_is_redirect = 0 order by page_random limit 1;`)
+  if(res[0].length == 0){
+    res = await db.execute(`select page_title from page where page_random >= 0 and page_namespace = 0 and page_is_redirect = 0 order by page_random limit 1;`)
+  }
+  return res[0][0].page_title.toString()
 }
