@@ -31,14 +31,14 @@ export default class Shelf extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState){
+  shouldComponentUpdate = (nextProps, nextState) => {
     if(this.props.category == nextProps.category && this.props.index == nextProps.index){
       return false
     }
     return true
   }
 
-  getElements() {
+  getElements = () => {
     // const index = this.props.index//this.props.entries.indexOf(this.props.query)
     const offset = (this.props.rowSize - 1) / 2
     const elements = []
@@ -67,7 +67,7 @@ export default class Shelf extends Component {
     return elements
   }
 
-  render() {
+  render = () => {
     console.log("render")
 
     if(this.props.empty){

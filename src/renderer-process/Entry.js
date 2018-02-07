@@ -40,7 +40,7 @@ export default class Entry extends Component {
     this.searchImage()
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps = (nextProps) => {
     console.log(nextProps)
     if(this.props.title == nextProps.title){
       return
@@ -49,12 +49,12 @@ export default class Entry extends Component {
     this.searchImage(nextProps.title)
   }
 
-  async searchImage(title = this.props.title) {
+  searchImage = async (title = this.props.title) => {
     console.log("search image")
     this.setState({ img: await this.props.db.getImage(title) })
   }
 
-  render() {
+  render = () => {
     console.log("render")
 
     if(this.props.empty){

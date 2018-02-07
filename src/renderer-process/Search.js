@@ -1,0 +1,66 @@
+import React, { Component } from "react"
+import Autosuggest from 'react-autosuggest'
+
+
+export default class Search extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      value: "",
+      suggestions: ["a", "b"]
+    }
+  }
+
+  onChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue
+    })
+  }
+
+  onSuggestionsFetchRequested = async ({ value }) => {
+    const res = await this.props.db.searchByTitle(value)
+    const suggestions = []
+    for(let obj of res[0]){
+      suggestions.push(obj.page_title.toString())
+    }
+    this.setState({
+      suggestions: suggestions
+    })
+  }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    })
+  }
+
+  getSuggestionValue = value => value.name
+
+  renderSuggestion = suggestion => {
+    return(
+      <div>{suggestion}</div>
+    )
+  }
+
+  onSearch = (value) => {}
+
+  render() {
+    const { value, suggestions } = this.state
+    const inputProps = {
+      placeholder: "Search Wikipedia",
+      value,
+      onChange: this.onChange
+    }
+    
+    return(
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        getSuggestionValue={this.getSuggestionValue}
+        renderSuggestion={this.renderSuggestion}
+        inputProps={inputProps}
+      />
+    )
+  }
+}

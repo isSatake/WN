@@ -1,9 +1,11 @@
 import React, { Component } from "react"
 import ReactDOM from "react-dom"
+import autoBind from 'react-autobind'
 import Request from "superagent"
 import RaisedButton from 'material-ui/RaisedButton'
 import db from "./db"
 import Shelf from "./Shelf"
+import Search from './Search'
 
 const COLUMNS_SIZE = 3
 const QUERY_WAIT_MSEC = 500
@@ -189,12 +191,12 @@ export default class Root extends Component {
         width="100%"
         height="90%" />
     )
-    // const wikipedia = ""
 
     return(
       <div>
-        <div style={{ marginBottom: "20px" }}>
-          <RaisedButton label="おまかせ" primary={true} onClick={(e) => this.randomRequest()}/>
+        <div style={{ marginBottom: 30 }}>
+          <Search db={db} request={this.requestQuery}/>
+          <RaisedButton label="おまかせ" primary={true} onClick={this.randomRequest}/>
         </div>
         <div style={{ display: "flex" }} >
             <div style={{ width: "60%", display: "flex" }}>

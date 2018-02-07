@@ -6,7 +6,7 @@ const SLOW_QUERY_THRESHOLD = 5000
 const BING_URL = 'https://api.cognitive.microsoft.com/bing/v7.0/images/search?count=1&q='
 let db
 
-exports.connect = async function() {
+exports.connect = async () => {
   db = await mysql.createConnection({
     host: 'localhost',//process.env.DB_HOST,
     user: 'root',//process.env.DB_USER,
@@ -63,7 +63,7 @@ exports.memberByMember = async function(title) {
   return members
 }
 
-exports.getImage = async function(title) {
+exports.getImage = async (title) => {
   const res = await db.execute(`select url from image where title = ${db.escape(title)}`)
   if(res[0].length == 0){
     const res = await Request.get(`${BING_URL}${encodeURIComponent(title)}`).set("Ocp-Apim-Subscription-Key", "3ebf24197a5a4366b937f25e14869320")
@@ -84,4 +84,8 @@ exports.getRandomPage = async function() {
     res = await db.execute(`select page_title from page where page_random >= 0 and page_namespace = 0 and page_is_redirect = 0 order by page_random limit 1;`)
   }
   return res[0][0].page_title.toString()
+}
+
+exports.searchByTitle = async (query) => {
+  return await db.execute(`select page_title from page where page_title like '${query}%' limit 10;`)
 }
