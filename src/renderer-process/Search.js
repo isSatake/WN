@@ -11,7 +11,7 @@ export default class Search extends Component {
     }
   }
 
-  onChange = (event, { newValue }) => {
+  onChange = (event, { newValue, method }) => {
     this.setState({
       value: newValue
     })
@@ -34,7 +34,7 @@ export default class Search extends Component {
     })
   }
 
-  getSuggestionValue = value => value.name
+  getSuggestionValue = value => value
 
   renderSuggestion = suggestion => {
     return(
@@ -44,6 +44,12 @@ export default class Search extends Component {
 
   onSearch = (value) => {}
 
+  onSelected = (event, { suggestion }) => {
+    console.log(suggestion)
+    console.log(this)
+    this.props.requestQuery(true, suggestion)
+  }
+
   render() {
     const { value, suggestions } = this.state
     const inputProps = {
@@ -51,7 +57,7 @@ export default class Search extends Component {
       value,
       onChange: this.onChange
     }
-    
+
     return(
       <Autosuggest
         suggestions={suggestions}
@@ -60,6 +66,7 @@ export default class Search extends Component {
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
+        onSuggestionSelected={this.onSelected}
       />
     )
   }

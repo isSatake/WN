@@ -55,6 +55,7 @@ async function getCategories(title) {
 }
 
 exports.memberByMember = async function(title) {
+  console.log(title)
   const categories = await getCategories(title)
   const members = []
   for(let category of categories){
@@ -87,5 +88,5 @@ exports.getRandomPage = async function() {
 }
 
 exports.searchByTitle = async (query) => {
-  return await db.execute(`select page_title from page where page_title like '${query}%' limit 10;`)
+  return await db.execute(`select page_title from page where page_title like '${query}%' and page_namespace = 0 and page_is_redirect = 0 limit 10;`)
 }

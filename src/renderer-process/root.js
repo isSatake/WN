@@ -23,33 +23,32 @@ export default class Root extends Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount = async () => {
     await db.connect()
     this.randomRequest()
-    // this.requestQuery("増井俊之")
     window.addEventListener("keydown", (e) => this.handleKeyDown(e))
   }
 
-  async randomRequest() {
+  randomRequest = async () => {
     this.setState({
       query: ""
     }, async () => {
-      this.requestQuery(await db.getRandomPage())
+      this.requestQuery(true, await db.getRandomPage())
     })
   }
 
-  requestQuery(query = this.currentEntries()[this.state.currentEntryIndex]) {
-    console.log("request")
+  requestQuery = async (isJump = false, query = this.currentEntries()[this.state.currentEntryIndex]) => {
+    console.log('submit query')
     console.log(query)
     if(!query || query.length == 0 || query == this.state.query){
       return
     }
-    const encodedQuery = encodeURIComponent(query)
-    this.request(query)
-  }
 
-  async request(query) {
-    console.log('submit query')
+    if(isJump){
+      this.setState({
+        query: ""
+      })
+    }
 
     const res = await db.memberByMember(query)
     console.log(res)
@@ -61,7 +60,7 @@ export default class Root extends Component {
           return i
         }
       }
-      return -1
+      return 0
     })()
 
     console.log(index)
@@ -76,15 +75,15 @@ export default class Root extends Component {
     })
   }
 
-  currentEntries() {
+  currentEntries = () => {
     return this.state.entryClusters[this.state.currentCategoryIndex].entries
   }
 
-  currentCategory() {
+  currentCategory = () => {
     return this.state.entryClusters[this.state.currentCategoryIndex].category
   }
 
-  waitForSelect() {
+  waitForSelect = () => {
     clearTimeout(this.timerID)
     this.timerID = setTimeout(() => {
       this.requestQuery()
@@ -92,7 +91,7 @@ export default class Root extends Component {
   }
 
 
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
     if(e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) {
       return
     }
@@ -140,7 +139,7 @@ export default class Root extends Component {
     }
   }
 
-  refreshColumns() {
+  refreshColumns = () => {
     const offset = (COLUMNS_SIZE - 1) / 2
     const columns = []
 
@@ -183,7 +182,7 @@ export default class Root extends Component {
     })
   }
 
-  render() {
+  render = () => {
     console.log("render")
     const wikipedia = (
       <iframe
@@ -195,7 +194,7 @@ export default class Root extends Component {
     return(
       <div>
         <div style={{ marginBottom: 30 }}>
-          <Search db={db} request={this.requestQuery}/>
+          <Search db={db} requestQuery={this.requestQuery}/>
           <RaisedButton label="おまかせ" primary={true} onClick={this.randomRequest}/>
         </div>
         <div style={{ display: "flex" }} >
