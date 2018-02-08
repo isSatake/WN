@@ -192,12 +192,18 @@ export default class Root extends Component {
     )
 
     return(
-      <div>
-        <div style={{ marginBottom: 30 }}>
-          <Search db={db} requestQuery={this.requestQuery}/>
-          <RaisedButton label="おまかせ" primary={true} onClick={this.randomRequest}/>
+      <div style={{ display: "flex", flexFlow: "column"}}>
+        <div style={{ display: "flex", marginBottom: 30, height: 36}}>
+          <Search
+            db={db}
+            requestQuery={this.requestQuery}/>
+          <RaisedButton
+           label="おまかせ"
+           primary={true}
+           onClick={this.randomRequest}
+           style={{ flexBasis: "20%" }}/>
         </div>
-        <div style={{ display: "flex" }} >
+        <div style={{ display: "flex", flex: "100%"}} >
             <div style={{ width: "60%", display: "flex" }}>
                 {this.state.columns}
             </div>

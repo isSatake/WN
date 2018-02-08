@@ -88,5 +88,5 @@ exports.getRandomPage = async function() {
 }
 
 exports.searchByTitle = async (query) => {
-  return await db.execute(`select page_title from page where page_title like '${query}%' and page_namespace = 0 and page_is_redirect = 0 limit 10;`)
+  return await db.execute(`select page_title from page where page_title like '${query}%' and page_namespace = 0 and page_is_redirect = 0 limit 100;`)
 }

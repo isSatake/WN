@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import Autosuggest from 'react-autosuggest'
-
+import searchTheme from './searchTheme'
 
 export default class Search extends Component {
   constructor(props){
@@ -38,7 +38,9 @@ export default class Search extends Component {
 
   renderSuggestion = suggestion => {
     return(
-      <div>{suggestion}</div>
+      <div style={{ zIndex: 100 }}>
+       {suggestion}
+      </div>
     )
   }
 
@@ -67,6 +69,7 @@ export default class Search extends Component {
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
         onSuggestionSelected={this.onSelected}
+        theme={searchTheme}
       />
     )
   }

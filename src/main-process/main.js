@@ -8,7 +8,11 @@ let win
 
 const createWindow = () => {
   // Create the browser window.
-  win = new BrowserWindow({width: 1100, height: 800})
+  win = new BrowserWindow({
+    width: 1100,
+    height: 800,
+    useContentSize: true
+  })
 
   // and load the index.html of the app.
   win.loadURL(url.format({
