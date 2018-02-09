@@ -70,7 +70,7 @@ export default class Search extends Component {
               <RadioButton style={this.radioStyle.button} value="9" label="9" />
             </RadioButtonGroup>
           ]}>
-          グリッド数
+          カラム数
         </MenuItem>
         <MenuItem
           leftIcon={<TimerIcon />}
