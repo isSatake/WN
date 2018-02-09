@@ -2,24 +2,26 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import autoBind from 'react-autobind'
 import Request from "superagent"
+import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
 import db from "./db"
 import Shelf from "./Shelf"
 import Search from './Search'
-
-const COLUMNS_SIZE = 3
-const QUERY_WAIT_MSEC = 500
+import OptionDrawer from './OptionDrawer'
 
 export default class Root extends Component {
   constructor(props){
     super(props)
 
     this.state = {
+      columnsSize: 3,
+      queryWaitMSec: 500,
       query: "",
       entryClusters: [], //{category: String, entries: [String]}
       columns: [],
       currentCategoryIndex: 0,
-      currentEntryIndex: 0
+      currentEntryIndex: 0,
+      drawerOpen: false
     }
   }
 
@@ -87,7 +89,7 @@ export default class Root extends Component {
     clearTimeout(this.timerID)
     this.timerID = setTimeout(() => {
       this.requestQuery()
-    }, QUERY_WAIT_MSEC)
+    }, this.state.queryWaitMSec)
   }
 
 
@@ -140,14 +142,14 @@ export default class Root extends Component {
   }
 
   refreshColumns = () => {
-    const offset = (COLUMNS_SIZE - 1) / 2
+    const offset = (this.state.columnsSize - 1) / 2
     const columns = []
 
     if(this.state.entryClusters.length == 0) {
       return
     }
 
-    for(let i = 0; i < COLUMNS_SIZE; i++){
+    for(let i = 0; i < this.state.columnsSize; i++){
       const isFocus = i == offset
       const cluster = this.state.entryClusters[this.state.currentCategoryIndex - offset + i]
 
@@ -165,7 +167,7 @@ export default class Root extends Component {
         <Shelf
           debugindex={this.state.currentCategoryIndex - offset + i}
           key={`shelf-${i}`}
-          rowSize={COLUMNS_SIZE}
+          rowSize={this.state.columnsSize}
           category={cluster ? cluster.category : ""}
           entries={cluster ? cluster.entries : ""}
           isFocus={isFocus}
@@ -182,6 +184,24 @@ export default class Root extends Component {
     })
   }
 
+  toggleDrawer = () => {
+    this.setState({
+      drawerOpen: !this.state.drawerOpen
+    })
+  }
+
+  setColumnsSize = (size) => {
+    this.setState({
+      columnsSize: size
+    })
+  }
+
+  setWaitTime = (msec) => {
+    this.setState({
+      queryWaitMSec: msec
+    })
+  }
+
   render = () => {
     console.log("render")
     const wikipedia = (
@@ -193,24 +213,33 @@ export default class Root extends Component {
 
     return(
       <div style={{ display: "flex", flexFlow: "column"}}>
-        <div style={{ display: "flex", marginBottom: 30, height: 36}}>
+        <div style={{ display: "flex", marginBottom: 30, height: 36 }}>
+          <RaisedButton
+            label="options"
+            primary={true}
+            onClick={this.toggleDrawer}
+            style={{ flexBasis: "20%", marginRight: 30 }}/>
           <Search
             db={db}
             requestQuery={this.requestQuery}/>
           <RaisedButton
-           label="おまかせ"
-           primary={true}
-           onClick={this.randomRequest}
-           style={{ flexBasis: "20%" }}/>
+            label="おまかせ"
+            primary={true}
+            onClick={this.randomRequest}
+            style={{ flexBasis: "20%" }}/>
         </div>
         <div style={{ display: "flex", flex: "100%"}} >
             <div style={{ width: "60%", display: "flex" }}>
-                {this.state.columns}
+              {this.state.columns}
             </div>
             <div style={{ width: "40%" }}>
               {wikipedia}
             </div>
         </div>
+        <OptionDrawer
+          open={this.state.drawerOpen}
+          setColumnsSize={this.setColumnsSize}
+          setWaitTime={this.setWaitTime} />
       </div>
     )
   }
