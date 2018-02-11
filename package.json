@@ -1,6 +1,6 @@
 {
   "name": "WN",
-  "version": "0.0.0",
+  "version": "v0.0.1",
   "description": "",
   "homepage": "https://github.com/stkay/WN",
   "main": "main-process.js",
@@ -12,7 +12,7 @@
     "launch": "electron .",
     "main-process": "npm run build:main ; npm run launch",
     "start:dev": "npm run main-process & npm run watch",
-    "package": "electron-packager . WN --platform=darwin --arch=x64 --overwrite"
+    "package": "build --mac"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +23,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "babelify": "^8.0.0",
     "browserify": "^15.2.0",
-    "electron": "^1.7.11",
     "electron-json-storage": "^4.0.2",
     "electron-log": "^2.2.14",
     "electron-updater": "^2.20.1",
@@ -38,6 +37,7 @@
     "superagent": "^3.8.2"
   },
   "devDependencies": {
+    "electron": "^1.7.11",
     "watchify": "^3.10.0"
   },
   "build": {

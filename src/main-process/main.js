@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+import { autoUpdater } from "electron-updater"
 import path from 'path'
 import url from 'url'
 // import * as mysql from 'mysql2/promise'
@@ -23,6 +24,8 @@ const createWindow = () => {
 
   // Open the DevTools.
   win.webContents.openDevTools()
+
+  autoUpdater.checkForUpdatesAndNotify()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
