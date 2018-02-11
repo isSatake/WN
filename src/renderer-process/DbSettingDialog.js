@@ -37,7 +37,7 @@ export default class DbSettingDialog extends Component {
       password: password.getValue(),
       database: database.getValue()
     }
-    storage.set("config", json, (err) => {
+    storage.set("db", json, (err) => {
       if(err) {
         alert(err)
       }

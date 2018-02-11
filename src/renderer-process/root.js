@@ -15,8 +15,8 @@ export default class Root extends Component {
     super(props)
 
     this.state = {
-      columnsSize: 3,
-      queryWaitMSec: 500,
+      columnsSize: "3",
+      queryWaitMSec: "500",
       query: "",
       entryClusters: [], //{category: String, entries: [String]}
       columns: [],
@@ -34,7 +34,7 @@ export default class Root extends Component {
   }
 
   componentDidMount = async () => {
-    storage.get("config", async (err, data) => {
+    storage.get("db", async (err, data) => {
       if(Object.keys(data).length === 0) {
         alert("Configure DB")
         this.toggleDrawer()
