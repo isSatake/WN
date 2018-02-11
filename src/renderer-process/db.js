@@ -2,19 +2,17 @@ import * as mysql from "mysql2/promise"
 import Request from "superagent"
 import excludedCategories from "./excludedCategories"
 
-const SLOW_QUERY_THRESHOLD = 5000
+// const SLOW_QUERY_THRESHOLD = 5000
 const BING_URL = 'https://api.cognitive.microsoft.com/bing/v7.0/images/search?count=1&q='
+let props
 let db
 
-exports.connect = async () => {
-  db = await mysql.createConnection({
-    host: 'localhost',//process.env.DB_HOST,
-    user: 'root',//process.env.DB_USER,
-    database: 'wikipage'//process.env.DB_NAME
-  })
+exports.init = async (json) => {
+  props = json
+  db = await mysql.createConnection(props)
 }
 
-async function getCategoryMember(category) {
+const getCategoryMember = async (category) => {
   const startTime = new Date().getTime()
   const [rows, fields] = await db.execute(`select categorylinks.cl_to,page.page_title from categorylinks inner join page on categorylinks.cl_from = page.page_id where categorylinks.cl_to = ${db.escape(category)}`)
   const elapsedTime = new Date().getTime() - startTime
@@ -32,7 +30,7 @@ async function getCategoryMember(category) {
   return member
 }
 
-function isNotCategory(title){
+const isNotCategory = (title) => {
   for(let filter of excludedCategories){
     if(title.indexOf(filter) >= 0){
       return true
@@ -40,7 +38,7 @@ function isNotCategory(title){
   }
 }
 
-async function getCategories(title) {
+const getCategories = async (title) => {
   const [rows, fields] = await db.execute(`select page.page_title,categorylinks.cl_to from page inner join categorylinks on page.page_id = categorylinks.cl_from where page.page_title = ${db.escape(title)};`)
   const categories = []
 
@@ -54,7 +52,7 @@ async function getCategories(title) {
   return categories
 }
 
-exports.memberByMember = async function(title) {
+exports.memberByMember = async (title) => {
   console.log(title)
   const categories = await getCategories(title)
   const members = []
@@ -79,7 +77,7 @@ exports.getImage = async (title) => {
   }
 }
 
-exports.getRandomPage = async function() {
+exports.getRandomPage = async () => {
   let res = await db.execute(`select page_title from page where page_random >= ${Math.random(1)} and page_namespace = 0 and page_is_redirect = 0 order by page_random limit 1;`)
   if(res[0].length == 0){
     res = await db.execute(`select page_title from page where page_random >= 0 and page_namespace = 0 and page_is_redirect = 0 order by page_random limit 1;`)
@@ -90,3 +88,5 @@ exports.getRandomPage = async function() {
 exports.searchByTitle = async (query) => {
   return await db.execute(`select page_title from page where page_title like '${query}%' and page_namespace = 0 and page_is_redirect = 0 limit 100;`)
 }
+
+exports.getProps = () => props

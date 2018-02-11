@@ -2,12 +2,13 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import autoBind from 'react-autobind'
 import Request from "superagent"
+import storage from "electron-json-storage"
 import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
 import db from "./db"
 import Shelf from "./Shelf"
 import Search from './Search'
-import OptionDrawer from './OptionDrawer'
+import SettingDrawer from './SettingDrawer'
 
 export default class Root extends Component {
   constructor(props){
@@ -23,12 +24,31 @@ export default class Root extends Component {
       currentEntryIndex: 0,
       drawerOpen: false
     }
+
+    this.rootStyle = {
+      display: "flex",
+      flexFlow: "column",
+      margin: 20,
+      font: "14px 'Lucida Grande', Helvetica, Arial, sans-serif"
+    }
   }
 
   componentDidMount = async () => {
-    await db.connect()
-    this.randomRequest()
-    window.addEventListener("keydown", (e) => this.handleKeyDown(e))
+    storage.get("config", async (err, data) => {
+      if(Object.keys(data).length === 0) {
+        alert("Configure DB")
+        this.toggleDrawer()
+        return
+      }
+
+      await db.init(data).catch((err) => {
+        alert(err)
+        this.toggleDrawer()
+      })
+
+      this.randomRequest()
+      window.addEventListener("keydown", (e) => this.handleKeyDown(e))
+    })
   }
 
   randomRequest = async () => {
@@ -212,10 +232,10 @@ export default class Root extends Component {
     )
 
     return(
-      <div style={{ display: "flex", flexFlow: "column"}}>
+      <div style={this.rootStyle}>
         <div style={{ display: "flex", marginBottom: 30, height: 36 }}>
           <RaisedButton
-            label="options"
+            label="settings"
             primary={true}
             onClick={this.toggleDrawer}
             style={{ flexBasis: "20%", marginRight: 30 }}/>
@@ -236,10 +256,11 @@ export default class Root extends Component {
               {wikipedia}
             </div>
         </div>
-        <OptionDrawer
+        <SettingDrawer
           open={this.state.drawerOpen}
           setColumnsSize={this.setColumnsSize}
-          setWaitTime={this.setWaitTime} />
+          setWaitTime={this.setWaitTime}
+          db={db} />
       </div>
     )
   }
