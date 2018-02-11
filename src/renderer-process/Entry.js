@@ -1,5 +1,8 @@
 import React, { Component } from "react"
 import Request from "superagent"
+import gss from "google-search-scrape"
+
+gss.getImages('toshiyuki masui').then((res) => console.log(res[0])) //google.co.jpにしたい
 
 const ENTRY_HEIGHT = 70
 

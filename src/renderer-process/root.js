@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import ReactDOM from "react-dom"
+import { autoUpdater } from "electron-updater"
 import autoBind from 'react-autobind'
 import Request from "superagent"
 import storage from "electron-json-storage"
@@ -31,6 +32,8 @@ export default class Root extends Component {
       margin: 20,
       font: "14px 'Lucida Grande', Helvetica, Arial, sans-serif"
     }
+
+    autoUpdater.checkForUpdatesAndNotify()
   }
 
   componentDidMount = async () => {

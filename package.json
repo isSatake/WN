@@ -1,7 +1,8 @@
 {
   "name": "WN",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
+  "homepage": "https://github.com/stkay/WN",
   "main": "main-process.js",
   "scripts": {
     "postinstall": "npm run build:main ; npm run build:app",
@@ -24,6 +25,9 @@
     "browserify": "^15.2.0",
     "electron": "^1.7.11",
     "electron-json-storage": "^4.0.2",
+    "electron-log": "^2.2.14",
+    "electron-updater": "^2.20.1",
+    "google-search-scrape": "^0.2.5",
     "material-ui": "^0.20.0",
     "mysql2": "^1.5.1",
     "react": "^16.2.0",
@@ -35,5 +39,13 @@
   },
   "devDependencies": {
     "watchify": "^3.10.0"
+  },
+  "build": {
+    "appId": "com.stkay.wn",
+    "mac": {
+      "publish": [
+        "github"
+      ]
+    }
   }
 }
