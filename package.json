@@ -23,6 +23,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babelify": "^8.0.0",
     "browserify": "^15.2.0",
+    "cheerio-httpcli": "^0.7.2",
     "electron-json-storage": "^4.0.2",
     "electron-log": "^2.2.14",
     "electron-updater": "^2.20.1",
