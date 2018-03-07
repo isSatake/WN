@@ -22,7 +22,8 @@ export default class Root extends Component {
       columns: [],
       currentCategoryIndex: 0,
       currentEntryIndex: 0,
-      drawerOpen: false
+      drawerOpen: false,
+      wikipediaOpen: false
     }
 
     this.rootStyle = {
@@ -114,7 +115,7 @@ export default class Root extends Component {
 
 
   handleKeyDown = (e) => {
-    if(e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) {
+    if(e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40 && e.keyCode != 13) {
       return
     }
     e.preventDefault()
@@ -158,6 +159,9 @@ export default class Root extends Component {
           currentEntryIndex: this.state.entryClusters[this.state.currentCategoryIndex + 1].entries.indexOf(this.state.query)
         })
         return this.refreshColumns()
+      case 13:
+        this.toggleWikipedia()
+        return
     }
   }
 
@@ -210,6 +214,12 @@ export default class Root extends Component {
     })
   }
 
+  toggleWikipedia = () => {
+    this.setState({
+      wikipediaOpen: !this.state.wikipediaOpen
+    })
+  }
+
   setColumnsSize = (size) => {
     this.setState({
       columnsSize: size
@@ -227,8 +237,12 @@ export default class Root extends Component {
     const wikipedia = (
       <iframe
         src={`https://ja.m.wikipedia.org/wiki/${this.state.query}`}
-        width="100%"
-        height="90%" />
+        style={{
+          width: "100%",
+          height: "90%",
+          border: "none"
+        }}
+      />
     )
 
     return(
@@ -248,13 +262,11 @@ export default class Root extends Component {
             onClick={this.randomRequest}
             style={{ flexBasis: "20%" }}/>
         </div>
-        <div style={{ display: "flex", flex: "100%"}} >
-            <div style={{ width: "60%", display: "flex" }}>
-              {this.state.columns}
-            </div>
-            <div style={{ width: "40%" }}>
-              {wikipedia}
-            </div>
+        <div style={{ width: "100%", display: "flex" }}>
+          {this.state.columns}
+        </div>
+        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 86 : "70%", transition: "all 300ms 0s ease"}}>
+          {wikipedia}
         </div>
         <SettingDrawer
           open={this.state.drawerOpen}
