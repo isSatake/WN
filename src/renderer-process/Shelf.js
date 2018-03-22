@@ -20,8 +20,8 @@ export default class Shelf extends Component {
 
     this.wrapperStyle = {
       height: "80%",
-      width: "30%",
-      marginRight: "20px"
+      width: 210,
+      paddingRight: "20px"
     }
 
     if(this.props.isFocus){

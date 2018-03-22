@@ -2,21 +2,22 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import autoBind from 'react-autobind'
 import Request from "superagent"
-import storage from "electron-json-storage"
 import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
 import db from "./db"
+import storage from "./storage"
 import Shelf from "./Shelf"
 import Search from './Search'
 import SettingDrawer from './SettingDrawer'
+
+const COLUMNS_SIZE = 5
+const QUERY_WAIT_MSEC = 500
 
 export default class Root extends Component {
   constructor(props){
     super(props)
 
     this.state = {
-      columnsSize: "3",
-      queryWaitMSec: "500",
       query: "",
       entryClusters: [], //{category: String, entries: [String]}
       columns: [],
@@ -32,24 +33,25 @@ export default class Root extends Component {
       margin: 20,
       font: "14px 'Lucida Grande', Helvetica, Arial, sans-serif"
     }
+
   }
 
   componentDidMount = async () => {
-    storage.get("db", async (err, data) => {
-      if(Object.keys(data).length === 0) {
-        alert("Configure DB")
-        this.toggleDrawer()
-        return
-      }
+    const data = await storage.getDBSettings()
 
-      await db.init(data).catch((err) => {
-        alert(err)
-        this.toggleDrawer()
-      })
+    if(Object.keys(data).length === 0) {
+      alert("Configure DB")
+      this.toggleDrawer()
+      return
+    }
 
-      this.randomRequest()
-      window.addEventListener("keydown", (e) => this.handleKeyDown(e))
+    await db.init(data).catch((err) => {
+      alert(err)
+      this.toggleDrawer()
     })
+
+    this.randomRequest()
+    window.addEventListener("keydown", (e) => this.handleKeyDown(e))
   }
 
   randomRequest = async () => {
@@ -110,7 +112,7 @@ export default class Root extends Component {
     clearTimeout(this.timerID)
     this.timerID = setTimeout(() => {
       this.requestQuery()
-    }, this.state.queryWaitMSec)
+    }, QUERY_WAIT_MSEC)
   }
 
 
@@ -166,20 +168,24 @@ export default class Root extends Component {
   }
 
   refreshColumns = () => {
-    const offset = (this.state.columnsSize - 1) / 2
+    const offset = (COLUMNS_SIZE - 1) / 2
     const columns = []
+    console.log(offset)
 
     if(this.state.entryClusters.length == 0) {
       return
     }
 
-    for(let i = 0; i < this.state.columnsSize; i++){
+    for(let i = 0; i < COLUMNS_SIZE; i++){
       const isFocus = i == offset
       const cluster = this.state.entryClusters[this.state.currentCategoryIndex - offset + i]
 
       if(!cluster){
         columns.push(
-          <Shelf empty={true} />
+          <Shelf
+            empty={true}
+            rowSize={COLUMNS_SIZE}
+          />
         )
         continue
       }
@@ -191,7 +197,7 @@ export default class Root extends Component {
         <Shelf
           debugindex={this.state.currentCategoryIndex - offset + i}
           key={`shelf-${i}`}
-          rowSize={this.state.columnsSize}
+          rowSize={COLUMNS_SIZE}
           category={cluster ? cluster.category : ""}
           entries={cluster ? cluster.entries : ""}
           isFocus={isFocus}
@@ -206,6 +212,7 @@ export default class Root extends Component {
     this.setState({
       columns: columns
     })
+    console.log("columns updated")
   }
 
   toggleDrawer = () => {
@@ -217,18 +224,6 @@ export default class Root extends Component {
   toggleWikipedia = () => {
     this.setState({
       wikipediaOpen: !this.state.wikipediaOpen
-    })
-  }
-
-  setColumnsSize = (size) => {
-    this.setState({
-      columnsSize: size
-    })
-  }
-
-  setWaitTime = (msec) => {
-    this.setState({
-      queryWaitMSec: msec
     })
   }
 
@@ -262,16 +257,14 @@ export default class Root extends Component {
             onClick={this.randomRequest}
             style={{ flexBasis: "20%" }}/>
         </div>
-        <div style={{ width: "100%", display: "flex" }}>
+        <div style={{ width: "1200px", display: "flex" }}>
           {this.state.columns}
         </div>
-        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 86 : "70%", transition: "all 300ms 0s ease"}}>
+        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 76 : "70%", transition: "all 300ms 0s ease"}}>
           {wikipedia}
         </div>
         <SettingDrawer
           open={this.state.drawerOpen}
-          setColumnsSize={this.setColumnsSize}
-          setWaitTime={this.setWaitTime}
           db={db} />
       </div>
     )
