@@ -4,7 +4,7 @@ import gss from "google-search-scrape"
 
 gss.getImages('toshiyuki masui').then((res) => console.log(res[0])) //google.co.jpにしたい
 
-const ENTRY_HEIGHT = 70
+const ENTRY_HEIGHT = 40
 
 export default class Entry extends Component {
   constructor(props){
@@ -20,7 +20,7 @@ export default class Entry extends Component {
       overflow: "hidden",
       width: "100%",
       height: ENTRY_HEIGHT,
-      marginBottom: 30,
+      marginBottom: 20,
       borderRadius: "20px",
       display: "flex",
       alignItems: "center"

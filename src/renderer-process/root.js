@@ -260,7 +260,7 @@ export default class Root extends Component {
         <div style={{ width: "1200px", display: "flex" }}>
           {this.state.columns}
         </div>
-        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 76 : "70%", transition: "all 300ms 0s ease"}}>
+        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 76 : "60%", transition: "all 300ms 0s ease"}}>
           {wikipedia}
         </div>
         <SettingDrawer

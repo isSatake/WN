@@ -11,9 +11,9 @@ export default class Shelf extends Component {
       whiteSpace: "nowrap",
       overflow: "hidden",
       height: 40,
-      marginBottom: 30,
+      marginBottom: 20,
       borderRadius: 20,
-      padding: 10,
+      paddingLeft: 10,
       display: "flex",
       alignItems: "center"
     }
