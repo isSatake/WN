@@ -21,13 +21,18 @@ export default class Entry extends Component {
       width: "100%",
       height: ENTRY_HEIGHT,
       marginBottom: 20,
+      paddingLeft: 10,
       borderRadius: "20px",
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+      boxSizing: "border-box"
     }
 
-    if(this.props.isFocus){
+    if(this.props.empty){
+      this.style.background = "#FFF"
+    }else if(this.props.isFocus){
       this.style.background = "#AAA"
+      this.style.fontWeight = "bold"
     }else{
       this.style.background = "#EEE"
     }
@@ -53,8 +58,8 @@ export default class Entry extends Component {
   }
 
   searchImage = async (title = this.props.title) => {
-    console.log("search image")
-    this.setState({ img: await this.props.db.getImage(title) })
+    // console.log("search image")
+    // this.setState({ img: await this.props.db.getImage(title) })
   }
 
   render = () => {
@@ -66,11 +71,17 @@ export default class Entry extends Component {
       )
     }
 
+    // const img = {
+    //   <img
+    //     src={this.state.img}
+    //     style={this.imgStyle} />
+    // }
+
+    const img = ""
+
     return(
       <div style={this.style}>
-        <img
-          src={this.state.img}
-          style={this.imgStyle} />
+        {img}
         <div>{this.props.title}</div>
       </div>
     )

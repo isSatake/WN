@@ -50,6 +50,8 @@ export default class Search extends Component {
     console.log(suggestion)
     console.log(this)
     this.props.requestQuery(true, suggestion)
+    //フォーカスを外す
+    //input.blur()
   }
 
   render() {

@@ -1,23 +1,26 @@
+import { cyan500 } from "material-ui/styles/colors"
+
 export default {
   container: {
-    flexBasis: "80%",
-    paddingRight: 30
+    flex: "1 1",
+    padding: "11 10 0 0"
   },
   input: {
     width: "100%",
-    height: "100%",
+    backgroundColor: cyan500,
+    color: "#FFF",
     padding: 10,
     fontFamily: 'Helvetica, sans-serif',
     fontWeight: 300,
     fontSize: 17,
-    border: '1px solid #aaa',
-    borderRadius: 3,
+    border: "none",
+    borderBottom: '1px solid #FFF',
     outline: "none"
   },
   suggestionsContainerOpen: {
     display: 'block',
     position: 'absolute',
-    top: 80,
+    top: 52,
     width: "auto",
     height: 300,
     border: '1px solid #aaa',

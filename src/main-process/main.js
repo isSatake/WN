@@ -10,7 +10,7 @@ let win
 const createWindow = () => {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1230,
+    width: 1185,
     height: 800,
     useContentSize: true
   })

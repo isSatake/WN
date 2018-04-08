@@ -2,8 +2,11 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import autoBind from 'react-autobind'
 import Request from "superagent"
+import AppBar from 'material-ui/AppBar'
 import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from "material-ui/IconButton"
+import MenuIcon from "material-ui/svg-icons/navigation/menu"
 import db from "./db"
 import storage from "./storage"
 import Shelf from "./Shelf"
@@ -30,7 +33,6 @@ export default class Root extends Component {
     this.rootStyle = {
       display: "flex",
       flexFlow: "column",
-      margin: 20,
       font: "14px 'Lucida Grande', Helvetica, Arial, sans-serif"
     }
 
@@ -240,27 +242,25 @@ export default class Root extends Component {
       />
     )
 
+    const search = (
+      <Search
+        db={db}
+        requestQuery={this.requestQuery}/>
+    )
+
     return(
       <div style={this.rootStyle}>
-        <div style={{ display: "flex", marginBottom: 30, height: 36 }}>
-          <RaisedButton
-            label="settings"
-            primary={true}
-            onClick={this.toggleDrawer}
-            style={{ flexBasis: "20%", marginRight: 30 }}/>
-          <Search
-            db={db}
-            requestQuery={this.requestQuery}/>
-          <RaisedButton
-            label="おまかせ"
-            primary={true}
-            onClick={this.randomRequest}
-            style={{ flexBasis: "20%" }}/>
-        </div>
-        <div style={{ width: "1200px", display: "flex" }}>
+        <AppBar
+          title="Wikipedia Navigator"
+          titleStyle={{ cursor: "pointer", flex: "0 1 57%" }}
+          style={{ width: "102%", top: -8, left: -8 }}
+          onLeftIconButtonClick={this.toggleDrawer}
+          onTitleClick={this.randomRequest}
+          children={search} />
+        <div style={{ width: 1155, padding: "10 0 0 20", display: "flex" }}>
           {this.state.columns}
         </div>
-        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 76 : "60%", transition: "all 300ms 0s ease"}}>
+        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 65 : "57%", transition: "all 300ms 0s ease", boxShadow: "0px 10px 10px 10px grey"}}>
           {wikipedia}
         </div>
         <SettingDrawer

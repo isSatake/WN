@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Drawer from "material-ui/Drawer"
+import AppBar from 'material-ui/AppBar'
 import MenuItem from "material-ui/MenuItem"
-import IconButton from "material-ui/IconButton"
 import StorageIcon from "material-ui/svg-icons/device/storage"
 import DbSettingDialog from "./DbSettingDialog"
 
@@ -41,7 +41,11 @@ export default class SettingDrawer extends Component {
       <Drawer
         open={this.state.open}
         docked={false}
-        onRequestChange={(open) => this.setState({open})} >
+        onRequestChange={(open) => this.setState({open})}
+        width={310} >
+        <AppBar
+          title="Wikipedia Navigator"
+          onLeftIconButtonClick={this.toggleDrawer} />
         <MenuItem
           leftIcon={<StorageIcon />}
           onClick={this.toggleDbDialog}>

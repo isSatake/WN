@@ -10,12 +10,15 @@ export default class Shelf extends Component {
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
       overflow: "hidden",
-      height: 40,
+      height: 50,
       marginBottom: 20,
       borderRadius: 20,
       paddingLeft: 10,
+      fontWeight: "bold",
+      fontSize: 15,
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+      boxSizing: "border-box"
     }
 
     this.wrapperStyle = {
