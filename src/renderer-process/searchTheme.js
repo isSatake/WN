@@ -3,7 +3,7 @@ import { cyan500 } from "material-ui/styles/colors"
 export default {
   container: {
     flex: "1 1",
-    padding: "11 10 0 0"
+    padding: "11 10 0 430"
   },
   input: {
     width: "100%",

@@ -252,7 +252,7 @@ export default class Root extends Component {
       <div style={this.rootStyle}>
         <AppBar
           title="Wikipedia Navigator"
-          titleStyle={{ cursor: "pointer", flex: "0 1 57%" }}
+          titleStyle={{ cursor: "pointer", flex: "0 1 20%" }}
           style={{ width: "102%", top: -8, left: -8 }}
           onLeftIconButtonClick={this.toggleDrawer}
           onTitleClick={this.randomRequest}
@@ -260,7 +260,7 @@ export default class Root extends Component {
         <div style={{ width: 1155, padding: "10 0 0 20", display: "flex" }}>
           {this.state.columns}
         </div>
-        <div style={{ position: "fixed", width: "100%", left: 0, top: this.state.wikipediaOpen ? 65 : "57%", transition: "all 300ms 0s ease", boxShadow: "0px 10px 10px 10px grey"}}>
+        <div style={{ position: "fixed", height: "100%", width: "100%", left: 0, top: this.state.wikipediaOpen ? 65 : "57%", transition: "all 300ms 0s ease", boxShadow: "0px 10px 10px 10px grey"}}>
           {wikipedia}
         </div>
         <SettingDrawer
