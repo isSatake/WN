@@ -7,6 +7,9 @@ import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
 import IconButton from "material-ui/IconButton"
 import MenuIcon from "material-ui/svg-icons/navigation/menu"
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up'
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
 import db from "./db"
 import storage from "./storage"
 import Shelf from "./Shelf"
@@ -248,6 +251,8 @@ export default class Root extends Component {
         requestQuery={this.requestQuery}/>
     )
 
+    const arrow = this.state.wikipediaOpen ? <ArrowDown/> : <ArrowUp/>
+
     return(
       <div style={this.rootStyle}>
         <AppBar
@@ -263,6 +268,11 @@ export default class Root extends Component {
         <div style={{ position: "fixed", height: "100%", width: "100%", left: 0, top: this.state.wikipediaOpen ? 65 : "57%", transition: "all 300ms 0s ease", boxShadow: "0px 10px 10px 10px grey"}}>
           {wikipedia}
         </div>
+        <FloatingActionButton
+        onClick={this.toggleWikipedia}
+        style={{ right: 20, bottom: 20, position: "fixed", zIndex: 10 }}>
+        {arrow}
+        </FloatingActionButton>
         <SettingDrawer
           open={this.state.drawerOpen}
           db={db} />

@@ -51,7 +51,12 @@ export default class Search extends Component {
     console.log(this)
     this.props.requestQuery(true, suggestion)
     //フォーカスを外す
-    //input.blur()
+    this.onSuggestionsClearRequested()
+    this.autosuggest.input.blur()
+    // setTimeout(()=>{
+    //   this.autosuggest.input.blur()
+    // }, 500)
+    // this.autosuggest.input.blur()
   }
 
   render() {
@@ -72,6 +77,7 @@ export default class Search extends Component {
         inputProps={inputProps}
         onSuggestionSelected={this.onSelected}
         theme={searchTheme}
+        ref={this.autosuggest}
       />
     )
   }
