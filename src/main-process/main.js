@@ -22,9 +22,6 @@ const createWindow = () => {
     slashes: true
   }))
 
-  // Open the DevTools.
-  win.webContents.openDevTools()
-
   autoUpdater.checkForUpdatesAndNotify()
 
   // Emitted when the window is closed.
