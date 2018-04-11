@@ -53,10 +53,6 @@ export default class Search extends Component {
     //フォーカスを外す
     this.onSuggestionsClearRequested()
     this.autosuggest.input.blur()
-    // setTimeout(()=>{
-    //   this.autosuggest.input.blur()
-    // }, 500)
-    // this.autosuggest.input.blur()
   }
 
   render() {
