@@ -58,7 +58,7 @@ export default class Search extends Component {
   render() {
     const { value, suggestions } = this.state
     const inputProps = {
-      placeholder: "Search Wikipedia",
+      placeholder: "Wikipediaページ名を指定",
       value,
       onChange: this.onChange
     }

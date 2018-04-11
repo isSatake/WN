@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import autoBind from 'react-autobind'
 import Request from "superagent"
 import AppBar from 'material-ui/AppBar'
+import LinearProgress from 'material-ui/LinearProgress'
 import { cyan500 } from "material-ui/styles/colors"
 import RaisedButton from 'material-ui/RaisedButton'
 import IconButton from "material-ui/IconButton"
@@ -30,7 +31,8 @@ export default class Root extends Component {
       currentCategoryIndex: 0,
       currentEntryIndex: 0,
       drawerOpen: false,
-      wikipediaOpen: false
+      wikipediaOpen: false,
+      isLoading: false
     }
 
     this.rootStyle = {
@@ -80,6 +82,10 @@ export default class Root extends Component {
       })
     }
 
+    this.setState({
+      isLoading: true
+    })
+
     const res = await db.memberByMember(query)
     console.log(res)
 
@@ -99,7 +105,8 @@ export default class Root extends Component {
       currentCategoryIndex: index,
       currentEntryIndex: res[index].entries.indexOf(query),
       query: query,
-      entryClusters: res
+      entryClusters: res,
+      isLoading: false
     }, () => {
       this.refreshColumns()
     })
@@ -251,6 +258,7 @@ export default class Root extends Component {
         requestQuery={this.requestQuery}/>
     )
 
+    const progress = this.state.isLoading ? <LinearProgress mode="indeterminate" style={{ position: "fixed", top: "64", left: "-1", width: "101%", backgroundColor: "#FFF" }}/> : ""
     const arrow = this.state.wikipediaOpen ? <ArrowDown/> : <ArrowUp/>
 
     return(
@@ -262,6 +270,7 @@ export default class Root extends Component {
           onLeftIconButtonClick={this.toggleDrawer}
           onTitleClick={this.randomRequest}
           children={search} />
+        {progress}
         <div style={{ width: 1155, padding: "10 0 0 20", display: "flex" }}>
           {this.state.columns}
         </div>
